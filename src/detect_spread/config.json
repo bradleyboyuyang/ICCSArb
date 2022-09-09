@@ -1,0 +1,48 @@
+{
+  "tq_id":"xxxx",
+  "@tq_id":"天勤api账户，需要网站注册",
+  "tq_password":"xxxxx",
+  "@tq_password":"天勤密码",
+  "real_trade": 0,
+  "@real_trade":"是否实盘交易，若是填1，若否填0并进入快期模拟交易",
+  "company_name":"Z招金期货",
+  "@company_name": "期货公司，需天勤支持",
+  "account": "188xxxx",
+  "@account": "期货账户id",
+  "password": "155xxxx",
+  "@password": "期货密码",
+  "monitor_tasks": [
+    {
+      "type":"main_link",
+      "near_symbol" :"CFFEX.IC2201",
+      "deferred_symbol":"CFFEX.IC2202",
+      "high_price":70,
+      "low_price":30
+    },
+    {
+      "type":"quarter_link",
+      "near_symbol" :"CFFEX.IC2203",
+      "deferred_symbol":"CFFEX.IC2206",
+      "high_price":190,
+      "low_price":150
+    }
+  ],
+  "enable_notify":"wechat",
+  "@enable_notify":"开启告警渠道,选择后需配置对应渠道的API信息",
+  "notify_inteval":30,
+  "@notify_inteval":"价差汇报时间间隔,单位分钟",
+  "dingding":{
+    "robot_id":"xxxxx",
+    "secret":"xxxx"
+  },
+  "wechat":{
+     "corpid":"xxxxx",
+     "secret":"-xxxx",
+     "agent_id":"xxxx"
+  },
+  "telegram":{
+    "token":"",
+    "chat_id":""
+  }
+
+}
