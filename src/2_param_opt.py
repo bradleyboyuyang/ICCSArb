@@ -44,7 +44,7 @@ else:
         result_list.append(result)
         
 result = pd.concat(result_list, ignore_index=True)
-result.sort_values(by='Cum_PnL', ascending=False, inplace=True)
+result.sort_values(by='Sharpe', ascending=False, inplace=True)
 result.reset_index(drop=True, inplace=True)
 print(result.head(20))
 result.to_csv('result.csv')

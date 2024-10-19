@@ -124,7 +124,7 @@ def get_performance(pnl_series: pd.Series, para, fig_show=True):
     # Create a dict with all performance metrics
     performance_df = pd.DataFrame({
         "Param": [str(para)],
-        "Cum_PnL": [pnl[-1].round(2)],
+        "Cum_PnL": [pnl[-1].round()],
         "Sharpe": [sharpe],
         "Sortino": [sortino],
         "Max Drawdown": [-drawdown],
