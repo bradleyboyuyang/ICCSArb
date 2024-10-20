@@ -34,7 +34,7 @@ def backtest_once(df, para):
 
 df_futures = pd.read_csv('./data/merged_data.csv')
 df_futures['datetime'] = pd.to_datetime(df_futures['datetime'])
-para_list = calendar_spread_para_list()
+para_list = calendar_spread_para_list(m_list=[30], n_list=range(40,60,1), g_list=range(10,30,1))
 if multiprocess:
     result_list = Parallel(n_jobs=os.cpu_count()-2)(delayed(backtest_once)(df_futures, para) for para in tqdm(para_list))
 else:

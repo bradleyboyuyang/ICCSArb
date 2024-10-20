@@ -3,6 +3,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.graph_objs as go
+from plotly.offline import plot
+from plotly.subplots import make_subplots
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -143,3 +146,62 @@ def get_performance(pnl_series: pd.Series, para, fig_show=True):
         plt.show()
 
     return performance_df
+
+
+def draw_thermodynamic_diagram(df, title, z, show=True, save_path=os.path.join('thermo_pic.html')):
+    hot_df = df.copy()
+    hot_df.reset_index(inplace=True, drop=True)
+    layout = go.Layout(
+        plot_bgcolor='red',  
+        paper_bgcolor='white',
+        autosize=True,
+        width=1200,
+        height=800,
+        title=title,
+        titlefont=dict(size=30, color='gray'),
+
+        legend=dict(
+            x=0.02,
+            y=0.02
+        ),
+
+        xaxis=dict(title='lower_bound', 
+                   titlefont=dict(color='red', size=20),
+                   tickfont=dict(color='blue', size=18, ),
+                   tickangle=45,  
+                   showticklabels=True,  
+                #    autorange=False,
+                   # range=[0, 100],
+                   type='linear',
+                   ),
+
+        yaxis=dict(title='upper_bound',  
+                   titlefont=dict(color='blue', size=18),  
+                   tickfont=dict(color='green', size=20, ),  
+                   showticklabels=True,  
+                   tickangle=-45,
+                   autorange=True,
+                   # range=[0, 100],
+                   type='linear',
+                   ),
+    )
+
+    fig = go.Figure(data=go.Heatmap(
+        showlegend=True,
+        name='data',
+        x=hot_df['x'],
+        y=hot_df['y'],
+        z=hot_df[z],
+        type='heatmap',
+    ),
+        layout=layout
+    )
+
+    fig.update_layout(margin=dict(t=100, r=150, b=100, l=100), autosize=True)
+
+    plot(figure_or_data=fig, filename=save_path, auto_open=False)
+
+    if show:
+        res = os.system('start ' + save_path)
+        if res != 0:
+            os.system('open ' + save_path)

@@ -30,9 +30,9 @@ for i in tqdm(range(0, len(files)-1)):
     df_merge = pd.merge(left=df1, right=df2, on=['datetime'], how='left', sort=True)
     df_merge.drop(['volume_x', 'volume_y'], axis=1, inplace=True)  
     
-    # generate a column to indicate delivery day
-    df_merge['delivery'] = False
-    df_merge.loc[df_merge['datetime'].dt.date == df_merge['datetime'].dt.date.max(), 'delivery'] = True
+    # generate a column to indicate 1 days within delivery day
+    delivery_day = df_merge['datetime'].dt.date.max()
+    df_merge['delivery'] = (delivery_day - df_merge['datetime'].dt.date).dt.days <= 1
     df_merge.dropna(inplace=True)
     df_list.append(df_merge)
 
@@ -70,6 +70,7 @@ summary_df['cum_pnl'] = (summary_df['points_earn']*MULTIPLIER).cumsum()
 
 # calculate performance metrics and plot
 df_daily = df.set_index('datetime')[['points_earn']].resample('D').sum()
-performance = get_performance(df_daily['points_earn']*MULTIPLIER, para=PARA_LIST, fig_show=True)
+performance = get_performance(df_daily['points_earn']*MULTIPLIER, para=PARA_LIST, fig_show=False)
 print(summary_df)
 print(performance)
+
