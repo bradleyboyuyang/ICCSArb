@@ -71,6 +71,9 @@ def calc_positions(df):
 
 
 def calc_pnl(df, slippage=2):
+    df['next_diff'] = df['diff'].shift(-1) # next timestamp price
+    df['next_diff'].fillna(value=df['diff'], inplace=True)
+    
     condition1 = df['pos'] != 0
     condition2 = df['pos'] != df['pos'].shift(1)  
     open_pos_condition = condition1 & condition2
@@ -91,11 +94,13 @@ def calc_pnl(df, slippage=2):
     df.loc[df['pos'] == 0, ['open_pos_price']] = None
     
     # close position price: close price + slippage
-    df.loc[close_pos_condition, 'close_pos_price'] = df['diff'] - (slippage * df['pos'])
+    df.loc[close_pos_condition, 'close_pos_price'] = df['next_diff'] - (slippage * df['pos'])
     condition3 = pd.notna(df['open_pos_price']) & pd.notna(df['close_pos_price'])
     df.loc[condition3, 'points_earn'] = (df['close_pos_price'] - df['open_pos_price']) * df['pos']
 
     df['points_sum'] = df['points_earn'].expanding(min_periods=1).sum()
+    
+    df.drop(['next_diff'], axis=1, inplace=True)
     return df
 
 
