@@ -7,6 +7,7 @@ from Functions import *
 DATA_PATH = './data/stock_if_min_cffex/'
 FUTURE = 'IC'
 PARA_LIST = [54, 29, 14]
+# PARA_LIST = [100, 80, 60]
 SLIPPAGE = 2 # unit of index points
 MULTIPLIER = 200
 
@@ -54,6 +55,9 @@ df.reset_index(drop=True, inplace=True)
 
 df.to_csv('./data/merged_data.csv', index=False)
 
+# print(df['diff'].describe())
+# exit()
+
 # generate signal
 df = calendar_spread_signal(df, para=PARA_LIST)
 
@@ -70,7 +74,7 @@ summary_df['cum_pnl'] = (summary_df['points_earn']*MULTIPLIER).cumsum()
 
 # calculate performance metrics and plot
 df_daily = df.set_index('datetime')[['points_earn']].resample('D').sum()
-performance = get_performance(df_daily['points_earn']*MULTIPLIER, para=PARA_LIST, fig_show=False)
+performance = get_performance(df_daily['points_earn']*MULTIPLIER, para=PARA_LIST, fig_show=True)
 print(summary_df)
 print(performance)
 
